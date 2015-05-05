@@ -1,31 +1,37 @@
 use strict;
 use warnings;
-use lib '..';
 use Test::WWW::Mechanize::PSGI;
 use Test::More;
 use Data::Dumper;
 use Dancer qw(!pass);
-use Cwd qw(cwd abs_path);
 use Home;
 
-my $dir = abs_path(cwd());
-print "dir: $dir\n";
-
-set appdir => $dir;
 set apphandler => 'PSGI';
 
-#set logger => 'console';
-#set log => 'core';
+my $mech = Test::WWW::Mechanize::PSGI->new( app => dance );
 
-my $app = dance;
-print Dumper($app);
+my @hooks = ();
+hook 'before_template_render' => sub {
+	my $tvars = shift;
+	my $hook = shift @hooks;
+	$hook->($tvars);
+};
 
-my $mech = Test::WWW::Mechanize::PSGI->new( app => $app );
-
-
+push (@hooks, sub {
+	diag "Running /home tests...";
+	my $tvars = shift;
+	ok $tvars->{lastn} eq 'mevissen', 'last name';
+	ok $tvars->{firstn} eq 'christopher', 'first name';	
+});
 $mech->get_ok('/home');
-diag $mech->content;
 
 
+push (@hooks, sub {
+	diag "Running /index tests...";
+	my $tvars = shift;
+	ok $tvars->{color} eq 'Orange', 'color';
+	ok $tvars->{animal} eq 'Tiger', 'animal';	
+});
+$mech->get_ok('/index');
 
 done_testing();

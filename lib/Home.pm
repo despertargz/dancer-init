@@ -8,6 +8,11 @@ get '/home' => sub {
 	return template 'greeting', $data;
 };
 
+get '/index' => sub {
+	my $data = { animal => 'Tiger', color => 'Orange' };
+	return template 'jungle', $data;
+};
+
 get '/test' => sub {
 	return 'testing...123';
 };

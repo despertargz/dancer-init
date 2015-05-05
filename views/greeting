@@ -1,3 +1,0 @@
-<body style='background-color: black'>
-	<p style='color: green'>hello mr. [% lastn %]</p>
-</body>

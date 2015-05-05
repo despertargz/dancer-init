@@ -1,5 +1,5 @@
 logger: console
-log: core 
+log: debug 
 template: xslate
 
 engines:
