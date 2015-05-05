@@ -1,0 +1,11 @@
+logger: console
+log: core 
+template: xslate
+
+engines:
+    xslate:
+        cache_dir: .xslate_cache/
+        cache: 1
+        syntax: TTerse
+        module: [Text::Xslate::Bridge::TT2Like]
+        extension: tx
